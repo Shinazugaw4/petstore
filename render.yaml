@@ -1,34 +1,16 @@
 services:
   - type: web
     name: petstore-api
-    env: static
+    runtime: docker
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: petstore-db
-          property: connectionString
-      - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: petstore-db
-          property: user
-      - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: petstore-db
-          property: password
-      - key: CORS_ALLOWED_ORIGINS
-        fromService:
-          type: web
-          name: petstore-web
-          envVarKey: RENDER_EXTERNAL_URL
 
   - type: web
     name: petstore-web
-    plan: free
-    env: static
+    runtime: static
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
@@ -42,9 +24,3 @@ services:
           type: web
           name: petstore-api
           envVarKey: RENDER_EXTERNAL_URL
-
-databases:
-  - name: petstore-db
-    plan: free
-    databaseName: petstore
-    user: petstore
