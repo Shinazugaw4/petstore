@@ -1,8 +1,7 @@
 services:
   - type: web
     name: petstore-api
-    plan: free
-    env: docker
+    env: static
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
     envVars:
